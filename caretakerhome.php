@@ -1,6 +1,12 @@
 <?php
+
+
+
+
+
 include 'config.php';
 session_start();
+unset($user);
 $user=$_SESSION['username'];
 $log = $_SESSION['admin'];
 
@@ -78,9 +84,10 @@ while ($db_field = mysql_fetch_assoc($result)) {
        
     </div>
   </div>
-  <div class="col-md-6  col-md-offset-3 complain complain1"><ul>
+  <div class="col-md-6  col-md-offset-3 complain complain1">
+  <ul>
 <?php
-
+  $today = date('Y-m-d');
   $sql1 = "SELECT * FROM complain WHERE hostel='$hostel' AND status='0'";
   $result1 = mysql_query($sql1);
   while ($db_field = mysql_fetch_assoc($result1)) {
@@ -91,20 +98,22 @@ while ($db_field = mysql_fetch_assoc($result)) {
     $c_email = $db_field['email'];
     $c_roll = $db_field['roll'];
     $c_date = $db_field['date'];
-  
-    echo '<li>';
-    echo $c_name; 
-    echo '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ';
-    echo $c_date; 
-    echo '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp';
-    echo $hostel ; 
-    echo '&nbsp; &nbsp; &nbsp';
-    echo $c_room; 
-    echo '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp';
-    echo $c_type; 
-    echo '<br>';
-    echo $c_issue;
-    echo '</button></li><hr>';
+    $days = (int)((strtotime($today) - strtotime($c_date))/(60*60*24));
+    if($days>3){
+      echo '<li>';
+      echo $c_name; 
+      echo '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ';
+      echo $c_date; 
+      echo '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp';
+      echo $hostel ; 
+      echo '&nbsp; &nbsp; &nbsp';
+      echo $c_room; 
+      echo '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp';
+      echo $c_type; 
+      echo '<br>';
+      echo $c_issue;
+      echo '</button></li><hr>';
+  }
 }?> 
   </ul></div>
  <div class="clearfix"></div>
@@ -118,18 +127,36 @@ while ($db_field = mysql_fetch_assoc($result)) {
   </div>
   <div class="col-md-6  col-md-offset-3 complain complain1">
       <ul>
-        <li>1. Ayush Agrawal &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ayshagra@gmail.com &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;For Fan Not Working</button>
-        </li><hr>
-        <li>1. Ayush Agrawal &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ayshagra@gmail.com &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;For Fan Not Working</button>
-        </li><hr>
-        <li>1. Ayush Agrawal &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ayshagra@gmail.com &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;For Fan Not Working</button>
-        </li><hr>
+
+<?php
+
+  $sql1 = "SELECT * FROM feedback WHERE hostel='$hostel'";
+  $result1 = mysql_query($sql1);
+  while ($db_field = mysql_fetch_assoc($result1)) {
+    $suggestion = $db_field['suggestion'];
+    $name = $db_field['name'];
+    $email = $db_field['email'];
+
+  
+    echo '<li>';
+    echo $name; 
+    echo '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ';
+    echo $email; 
+    echo '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp';
+    echo $suggestion ; 
+    echo '&nbsp; &nbsp; &nbsp';
+   
+    echo '</li><hr>';
+
         
+}?>         
         
         
       </ul>
+
     </div>
   <div class="clearfix"></div>
+  <br><br>
   </div>
 
 <?php 

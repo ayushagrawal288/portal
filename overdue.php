@@ -1,4 +1,12 @@
 <?php
+$sort = "BH 1";
+if(isset($_GET["sort"]))
+{ $sort = $_GET["sort"]; }
+?>
+
+
+
+<?php
 include 'config.php';
 session_start();
 $user=$_SESSION['username'];
@@ -7,6 +15,11 @@ $log = $_SESSION['employ'];
 if($log != "log"){
   header("Location: login.php");
 }
+
+
+
+
+
 
 $sql = "SELECT * FROM user WHERE email = '$user' " ;
 $result = mysql_query($sql);
@@ -42,6 +55,14 @@ while ($db_field = mysql_fetch_assoc($result)) {  //name loop
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+  <script>
+    function autoSubmit()
+    {
+        var formObject = document.forms['theForm'];
+        formObject.submit();
+    }
+  </script>
+
  </head>
    <body style='background-image:url("images/4.jpg");background-size:cover;'>
    <div class="header ">
@@ -62,40 +83,41 @@ while ($db_field = mysql_fetch_assoc($result)) {  //name loop
     </div> 
    <div class=" text-center">
    
-    <a href="#file" class="btn btn-info portal " role="button">Due</a>
-    <a href="#" class="btn btn-info portal active" role="button" >OverDue</a>
-    <br><br>
+   
   
 
   <div id="file" class="col-md-12" >
     <div class="col-md-6  col-md-offset-3">
-     <div class="col-md-9">
-       <p class="heading head_left">Overdue Complain</p>
+     <div class="col-md-6">
+       <p class="heading head_left">Pending issues</p>
      </div>
-     <div class="col-md-3">
-       <div class="dropdown col-md-3 head_right">
-        <form class="form-horizontal" action="caretakerverify.php" id="form1" name="register" method="POST">
-      <div class="control-group">
-           <div class="controls">
-               <select name="hostel" class="btn btn-success">
-                 <option value="">Choose your hostel</option>
-                  <option value="BH 1" class="btn btn-success">BH 1</option>
-                  <option value="BH 2">BH 2</option>
-                  <option value="BH 3">BH 3</option>
-                  <option value="GH">GH</option>
-            </select>
-            </div>
+     <div class="col-md-6">
+       <div class="dropdown head_right">
+
+
+  
+    <form name='theForm' id='theForm'>
+       
+        <div  style="color:#fff;font-size: 1.4em">
+         <input type="radio" name="sort" <?php if ($sort == 'BH 1') { ?>checked='checked' <?php } ?> value="BH 1" onChange="autoSubmit();" />BH 1
+         <input type="radio" name="sort" <?php if ($sort == 'BH 2') { ?>checked='checked' <?php } ?> value="BH 2" onChange="autoSubmit();" /> BH 2
+         <input type="radio" name="sort" <?php if ($sort == 'BH 3') { ?>checked='checked' <?php } ?> value="BH 3" onChange="autoSubmit();" />BH 3
+         <input type="radio" name="sort" <?php if ($sort == 'GH') { ?>checked='checked' <?php } ?> value="GH" onChange="autoSubmit();" /> GH
+         <input type="radio" name="sort" <?php if ($sort == 'faculty') { ?>checked='checked' <?php } ?> value="faculty" onChange="autoSubmit();" /> faculty
+         <input type="radio" name="sort" <?php if ($sort == 'lt_area') { ?>checked='checked' <?php } ?> value="lt_area" onChange="autoSubmit();" /> lt_area
         </div>
+ 
     </form>
-      </div>
+
+   </div>
      </div>
     </div>
   </div>
   <div class="col-md-6  col-md-offset-3 complain complain1">
       <ul>
 <?php
-
-  $sql1 = "SELECT * FROM complain WHERE type='$b' AND status='0'";
+ 
+  $sql1 = "SELECT * FROM complain WHERE type='$b' AND status='0' AND hostel='$sort'";
   $result1 = mysql_query($sql1);
   while ($db_field = mysql_fetch_assoc($result1)) {
     $c_room = $db_field['room'];

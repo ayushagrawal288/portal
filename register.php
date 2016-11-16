@@ -19,6 +19,9 @@ if (isset($_POST['user_register_submit'])) {
 		if($result1){
 			mysql_close($db_handle);
 			print("<script>location.href = 'login.php'</script>");
+		}
+		else{
+			$msg = "email id already exist";
 		}	
 				
 
@@ -57,7 +60,7 @@ if (isset($_POST['user_register_submit'])) {
   </div>
   <div class="col-md-6 head_right nav_right">
       <ul>
-        <li><a href="login.php">Login</a></li>
+        <li><a href="login.php" style="font-size: 1.6em;color: #fff;padding-top: 22px">Login</a></li>
       </ul>
   </div>
  </div> 
